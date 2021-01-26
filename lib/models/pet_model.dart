@@ -8,22 +8,21 @@ class Pet {
   String bio;
   int id;
 
-  Pet({
-    this.nome,
-    this.imageUrl,
-    this.descricao,
-    this.idade,
-    this.sexo,
-    this.cor,
-    this.bio,
-    this.id
-  });
+  Pet(
+      {this.nome,
+      this.imageUrl,
+      this.descricao,
+      this.idade,
+      this.sexo,
+      this.cor,
+      this.bio,
+      this.id});
 
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'nome': nome,
-      'imageUrl': imageUrl,
+      'imageUrl': 'assets/images/toto.png',
       'descricao': descricao,
       'idade': idade,
       'sexo': sexo,
@@ -32,4 +31,14 @@ class Pet {
     };
   }
 
+  Pet.fromMap(Map map) {
+    id = map['id'];
+    nome = map['nome'];
+    imageUrl = map['imageUrl'];
+    descricao = map['descricao'];
+    idade = map['idade'];
+    cor = map['cor'];
+    sexo = map['sexo'];
+    bio = map['bio'];
+  }
 }
