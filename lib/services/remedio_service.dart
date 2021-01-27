@@ -2,51 +2,26 @@ import 'dart:math';
 
 import 'package:lifepet_app/models/remedio_model.dart';
 import 'package:lifepet_app/services/pet_service.dart';
+import 'package:lifepet_app/utils/db_util.dart';
 
 class RemedioService{
   final List<Remedio> _remedioList = [];
   final PetService petService = PetService();
 
-
-  // RemedioService._internal(){
-  //   _remedioList.add(Remedio(
-  //     nome: "Remédio X",
-  //     data: "10/10/2020",
-  //     id: "123",
-  //     pet: petService.getPet("1")
-  //   ));
-  //   _remedioList.add(Remedio(
-  //       nome: "Remédio X",
-  //       data: "10/10/2020",
-  //       id: "231",
-  //       pet: petService.getPet("2")
-  //   ));
-  //   _remedioList.add(Remedio(
-  //       nome: "Remédio X",
-  //       data: "10/10/2020",
-  //       id: "11",
-  //       pet: petService.getPet("2")
-  //   ));
-  //   _remedioList.add(Remedio(
-  //       nome: "Remédio X",
-  //       data: "10/10/2020",
-  //       id: "22",
-  //       pet: petService.getPet("2")
-  //   ));
-  // }
-
-  List getRemediosPet(String id) {
-    return _remedioList.where((remedio) {
-      return remedio.pet.id == id;
-    }).toList();
+  Future<List> getRemediosPet(int id) async {
+   String whereString = "pet = ?";
+   List<dynamic> whereArgument = [id];
+   List<String> colunas = [
+     "id",
+     "nome",
+     "data",
+     "pet"
+   ];
+   final dataList = await DBUtil.getDataWhere('remedios', colunas, whereString, whereArgument);
+   return dataList.map((remedios) => Remedio.fromMap(remedios)).toList();
   }
 
   void addRemedio(Remedio remedio) {
-    _remedioList.add(Remedio(
-      nome: remedio.nome,
-      data: remedio.data,
-      id: Random().nextInt(100).toString(),
-      pet: remedio.pet
-    ));
+    DBUtil.insertData('remedios', remedio.toMap());
   }
 }

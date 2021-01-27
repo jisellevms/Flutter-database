@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lifepet_app/models/pet_model.dart';
 import 'package:lifepet_app/screens/form_cadastro_pet/form_cadastro_pet_screen.dart';
 import 'package:lifepet_app/screens/components/custom_navbar.dart';
+import 'package:lifepet_app/screens/form_editar_pet/form_editar_pet_screen.dart';
 import 'package:lifepet_app/services/pet_service.dart';
 
 import 'components/cartao_info_pet.dart';
@@ -28,13 +29,12 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-          body: FutureBuilder(
+    return FutureBuilder(
         future: _loadPet,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             pet = snapshot.data;
-            Scaffold(
+            return Scaffold(
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,11 +111,14 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                       child: Text(
                         pet.bio,
                         style: TextStyle(
-                            fontFamily: "Montserrat", fontSize: 16, height: 1.5),
+                            fontFamily: "Montserrat",
+                            fontSize: 16,
+                            height: 1.5),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -128,7 +131,7 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) =>
-                          FormCadastroPetScreen(id: pet.id.toString()),
+                          FormEditarPetScreen(id: pet.id),
                     ),
                   );
                 },
@@ -142,13 +145,9 @@ class _PerfilPetScreenState extends State<PerfilPetScreen> {
                 pet: pet,
               ),
             );
-          } else {
-            return Center(
-              child: CircularProgressIndicator()
-            );}
-        },
-      ),
-    );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
   }
 
   Future<Pet> _getPet(int id) async {
